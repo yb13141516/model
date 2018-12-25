@@ -1,0 +1,85 @@
+<!-- Horizontal Form -->
+ <div class="box box-info">
+      <!-- form start -->
+      <form class="form-horizontal">
+        <div class="box-body">
+          <div class="form-group">
+            <label for="nameId" class="col-sm-2 control-label">参数名</label>
+
+            <div class="col-sm-10">
+              <input type="text" class="form-control" name="name" id="nameId" placeholder="名称">
+            </div>
+          </div>
+           <div class="form-group">
+            <label for="valueId" class="col-sm-2 control-label">参数值</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" name="name" id="valueId" placeholder="名称">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="noteId" class="col-sm-2 control-label">描述</label>
+
+            <div class="col-sm-10">
+              <input type="text" class="form-control" name="note" id="noteId" placeholder="描述">
+            </div>
+          </div>
+        </div>
+        <!-- /.box-body -->
+      </form>
+    </div>
+ <script type="text/javascript">
+ 	$(function(){
+ 		$("#myModal").on("click",".btn-save",doSaveOrUpdate)
+ 		$("#myModal").on("hidden.bs.modal",function(e){
+ 			$("#myModal").off()
+ 			$("#myModal").removeData()
+ 		})
+ 		var rowData=$("#myModal").data("rowData")
+ 		if(rowData) doShowFormData(rowData)
+ 	})
+ 	function doShowFormData(rowData){
+ 		$("#nameId").val(rowData.name)
+ 		$("#valueId").val(rowData.value)
+ 		$("#noteId").val(rowData.note)
+ 	}
+ 	function doSaveOrUpdate(){
+ 		var params=doGetFormData()
+ 		var rowData=$("#myModal").data("rowData")
+ 		if(rowData) params.id=rowData.id
+ 		var saveUrl="config/doSaveObjects.do"
+ 		var updateUrl="config/doUpdateObjects.do"
+ 		var url=rowData?updateUrl:saveUrl
+ 		$.ajax({
+ 			url:url,
+ 			data:JSON.stringify(params),
+ 			dataType:"json",
+ 			contentType:"application/json",
+ 			type:"post",
+ 			success:function(result){
+ 				if(result.state==1){
+ 					alert(result.message)
+ 					$("#myModal").modal("hide")
+ 					doGetObjects()
+ 				}else{
+ 					alert(result.message)
+ 				}
+ 			}
+ 		})
+ 	}
+ 	function doGetFormData(){
+ 		var params={
+ 				"name":$("#nameId").val(),
+ 				"value":$("#valueId").val(),
+ 				"note":$("#noteId").val()
+ 		}
+ 		return params
+ 	}
+ </script>
+    
+    
+    
+    
+    
+    
+    
+    
